@@ -1,0 +1,97 @@
+name: CI - Testes e Qualidade
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    name: Testes e Verificações
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: ['3.12']
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Instalar UV
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "latest"
+
+      - name: Configurar Python ${{ matrix.python-version }}
+        run: uv python install ${{ matrix.python-version }}
+
+      - name: Instalar dependências
+        run: |
+          uv sync
+          uv pip install -e .
+
+      - name: Verificar formatação com Ruff
+        run: uv run ruff format --check src/ tests/
+        continue-on-error: false
+
+      - name: Executar Ruff (linting)
+        run: uv run ruff check src/ tests/
+        continue-on-error: false
+
+      - name: Verificar tipos com MyPy
+        run: uv run mypy src/
+        continue-on-error: false
+
+      - name: Executar testes
+        run: uv run pytest --cov=src/pyblaze --cov-report=xml --cov-report=term -v
+
+      - name: Upload cobertura para Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./coverage.xml
+          fail_ci_if_error: false
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Gerar relatório de cobertura
+        run: uv run pytest --cov=src/pyblaze --cov-report=html
+
+      - name: Upload relatório HTML
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: htmlcov/
+          retention-days: 30
+
+  build:
+    name: Build Verificação
+    runs-on: ${{ matrix.os }}
+    needs: test
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ['3.12']
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Instalar UV
+        uses: astral-sh/setup-uv@v3
+
+      - name: Configurar Python
+        run: uv python install ${{ matrix.python-version }}
+
+      - name: Instalar dependências
+        run: |
+          uv sync
+          uv pip install -e .
+
+      - name: Testar execução do jogo (headless)
+        run: |
+          uv run python -c "import pygame; pygame.init(); print('PyGame OK')"
+        env:
+          SDL_VIDEODRIVER: dummy
+          SDL_AUDIODRIVER: dummy
