@@ -42,15 +42,19 @@ class GameScene(BaseScene):
         self.start_time = pygame.time.get_ticks()
         self.elapsed_time = 0.0
 
-        # Jogador
-        self.player = Player(100, 400)
+        # Jogador - spawn em cima da primeira plataforma (y=500, player_height=50, margin=5)
+        self.player = Player(100, 445)
 
         # Fase hardcoded com 4 zonas
         self.platforms = self._create_platforms()
         self.rings = self._create_rings()
         self.enemies = self._create_enemies()
         self.checkpoints = self._create_checkpoints()
-        self.goal_rect = pygame.Rect(5800, 400, 80, 120)
+        # Goal em cima da última plataforma (5450, 360, 500, 40)
+        # Goal: largura=80, altura=120, posicionado em cima da plataforma
+        # Goal.bottom deve estar em platform.top = 360
+        # Então goal.y = 360 - 120 = 240
+        self.goal_rect = pygame.Rect(5800, 240, 80, 120)
 
         # Estado
         self.game_over = False
@@ -143,22 +147,38 @@ class GameScene(BaseScene):
         return enemies
 
     def _create_checkpoints(self) -> list[Checkpoint]:
-        """Cria checkpoints."""
+        """Cria checkpoints com spawn points corretos."""
         checkpoints = []
 
-        # Início (checkpoint 0 - automático)
+        # Checkpoint 0 - Início (automático)
+        # Plataforma: Rect(0, 500, 800, 40) => top=500
+        # Player height=50, então spawn y = 500-50-5 = 445 (margem de segurança)
         checkpoints.append(Checkpoint(50, 420))
         checkpoints[0].activate()
-        self.player.set_checkpoint(checkpoints[0].spawn_x, checkpoints[0].spawn_y)
+        checkpoints[0].spawn_x = 100.0
+        checkpoints[0].spawn_y = 445.0
+        self.player.set_checkpoint(100, 445)
 
         # Checkpoint 1 - Após rampa
+        # Plataforma: Rect(2200, 330, 1200, 40) => top=330
+        # Spawn y = 330-50-5 = 275
         checkpoints.append(Checkpoint(2150, 250))
+        checkpoints[1].spawn_x = 2250.0
+        checkpoints[1].spawn_y = 275.0
 
         # Checkpoint 2 - Após plataformas aéreas
+        # Plataforma: Rect(4550, 450, 200, 40) => top=450
+        # Spawn y = 450-50-5 = 395
         checkpoints.append(Checkpoint(4500, 370))
+        checkpoints[2].spawn_x = 4600.0
+        checkpoints[2].spawn_y = 395.0
 
         # Checkpoint 3 - Antes da meta
+        # Plataforma: Rect(5450, 360, 500, 40) => top=360
+        # Spawn y = 360-50-5 = 305
         checkpoints.append(Checkpoint(5400, 280))
+        checkpoints[3].spawn_x = 5500.0
+        checkpoints[3].spawn_y = 305.0
 
         logger.debug("Created %d checkpoints", len(checkpoints))
         return checkpoints
@@ -206,13 +226,14 @@ class GameScene(BaseScene):
         elif keys[pygame.K_SPACE]:
             pass  # Já processado no handle_event
 
-        # Física
-        self.physics.apply_gravity(self.player)
+        # Física (desabilita gravidade durante cooldown de respawn)
+        if self.player.respawn_cooldown == 0:
+            self.physics.apply_gravity(self.player)
         self.player.update(dt)
         self.physics.resolve_collision(self.player, self.platforms)
 
-        # Verifica morte por queda
-        if self.player.y > SCREEN_HEIGHT + 100:
+        # Verifica morte por queda (apenas se não estiver em cooldown de respawn)
+        if self.player.y > SCREEN_HEIGHT + 100 and self.player.respawn_cooldown == 0:
             logger.warning("Player fell off the map")
             self.player.take_damage()
             if self.player.is_dead:
