@@ -42,7 +42,8 @@ class GameScene(BaseScene):
         self.start_time = pygame.time.get_ticks()
         self.elapsed_time = 0.0
 
-        # Jogador - spawn em cima da primeira plataforma (y=500, player_height=50, margin=5)
+        # Jogador - spawn em cima da primeira plataforma
+        # (y=500, player_height=50, margin=5)
         self.player = Player(100, 445)
 
         # Fase hardcoded com 4 zonas
