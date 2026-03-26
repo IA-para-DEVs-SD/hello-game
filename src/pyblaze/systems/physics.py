@@ -54,7 +54,9 @@ class PhysicsSystem:
                 overlap_bottom = platform.bottom - entity_rect.top
 
                 # Encontra a menor sobreposição para determinar direção da colisão
-                min_overlap = min(overlap_left, overlap_right, overlap_top, overlap_bottom)
+                min_overlap = min(
+                    overlap_left, overlap_right, overlap_top, overlap_bottom
+                )
 
                 # Resolve colisão pela menor sobreposição
                 if min_overlap == overlap_top and entity.vy > 0:
@@ -66,11 +68,19 @@ class PhysicsSystem:
                     # Colidiu por baixo (bateu a cabeça)
                     entity.y = platform.bottom
                     entity.vy = 0.0
-                elif hasattr(entity, "vx") and min_overlap == overlap_left and entity.vx > 0:
+                elif (
+                    hasattr(entity, "vx")
+                    and min_overlap == overlap_left
+                    and entity.vx > 0
+                ):
                     # Colidiu pela esquerda (indo para direita)
                     entity.x = platform.left - entity.width
                     entity.vx = 0.0
-                elif hasattr(entity, "vx") and min_overlap == overlap_right and entity.vx < 0:
+                elif (
+                    hasattr(entity, "vx")
+                    and min_overlap == overlap_right
+                    and entity.vx < 0
+                ):
                     # Colidiu pela direita (indo para esquerda)
                     entity.x = platform.right
                     entity.vx = 0.0
