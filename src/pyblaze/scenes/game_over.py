@@ -28,9 +28,7 @@ class GameOverScene(BaseScene):
         self.final_time = final_time
         self.title_font = pygame.font.Font(None, 72)
         self.text_font = pygame.font.Font(None, 48)
-        logger.info(
-            "GameOverScene: victory=%s, time=%.2fs", victory, final_time
-        )
+        logger.info("GameOverScene: victory=%s, time=%.2fs", victory, final_time)
 
     def handle_event(self, event: pygame.event.Event) -> None:
         """Processa eventos.
@@ -41,10 +39,12 @@ class GameOverScene(BaseScene):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 from pyblaze.scenes.game import GameScene
+
                 self.switch_to(GameScene(self.screen))
                 logger.info("Restarting game")
             elif event.key == pygame.K_ESCAPE:
                 from pyblaze.scenes.menu import MenuScene
+
                 self.switch_to(MenuScene(self.screen))
                 logger.info("Returning to menu")
 
@@ -64,9 +64,7 @@ class GameOverScene(BaseScene):
         title = "VICTORY!" if self.victory else "GAME OVER"
         color = (0, 255, 0) if self.victory else (255, 50, 50)
         title_text = self.title_font.render(title, True, color)
-        title_rect = title_text.get_rect(
-            center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 3)
-        )
+        title_rect = title_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 3))
         self.screen.blit(title_text, title_rect)
 
         # Tempo
@@ -75,9 +73,7 @@ class GameOverScene(BaseScene):
         time_text = self.text_font.render(
             f"Time: {minutes:02d}:{seconds:02d}", True, (255, 255, 255)
         )
-        time_rect = time_text.get_rect(
-            center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
-        )
+        time_rect = time_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
         self.screen.blit(time_text, time_rect)
 
         # Instruções

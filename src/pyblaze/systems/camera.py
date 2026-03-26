@@ -48,9 +48,7 @@ class Camera:
         Returns:
             Novo retângulo com offset da câmera aplicado.
         """
-        return pygame.Rect(
-            rect.x - int(self.x), rect.y, rect.width, rect.height
-        )
+        return pygame.Rect(rect.x - int(self.x), rect.y, rect.width, rect.height)
 
     def reset(self) -> None:
         """Reseta a câmera para posição inicial."""

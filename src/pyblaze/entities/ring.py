@@ -97,9 +97,7 @@ class Ring(BaseEntity):
         pulse = abs(math.sin(self.rotation * 0.1)) * 3
         radius = int(RING_SIZE // 2 + pulse)
 
-        pygame.draw.circle(
-            surface, COLOR_RING, (rect.centerx, rect.centery), radius
-        )
+        pygame.draw.circle(surface, COLOR_RING, (rect.centerx, rect.centery), radius)
         pygame.draw.circle(
             surface, (200, 180, 0), (rect.centerx, rect.centery), radius, 2
         )
