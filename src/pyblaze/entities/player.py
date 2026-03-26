@@ -59,6 +59,7 @@ class Player(BaseEntity):
         self.facing_right = True
         self.sprint_timer = 0
         self.invincibility_timer = 0
+        self.respawn_cooldown = 0
         self.last_checkpoint_x = x
         self.last_checkpoint_y = y
 
@@ -71,16 +72,25 @@ class Player(BaseEntity):
         if self.state in (PlayerState.HURT, PlayerState.DEAD):
             return
 
-        # Movimento horizontal
+        # Movimento horizontal com controle direto
         moving = False
+        target_vx = 0.0
+
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-            self.vx -= ACCELERATION
+            target_vx = -PLAYER_SPEED
             self.facing_right = False
             moving = True
-        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-            self.vx += ACCELERATION
+        elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+            target_vx = PLAYER_SPEED
             self.facing_right = True
             moving = True
+
+        # Aplica aceleração suave em direção à velocidade alvo
+        if moving:
+            if abs(target_vx - self.vx) > ACCELERATION:
+                self.vx += ACCELERATION if target_vx > self.vx else -ACCELERATION
+            else:
+                self.vx = target_vx
 
         # Limita velocidade máxima
         if self.state == PlayerState.SPRINTING:
@@ -180,9 +190,11 @@ class Player(BaseEntity):
         self.y = self.last_checkpoint_y
         self.vx = 0.0
         self.vy = 0.0
-        self.invincibility_timer = INVINCIBILITY_FRAMES
-        self.state = PlayerState.INVINCIBLE
-        logger.info("Player respawned at checkpoint")
+        self.on_ground = True
+        self.invincibility_timer = INVINCIBILITY_FRAMES * 3
+        self.respawn_cooldown = 120
+        self.state = PlayerState.IDLE
+        logger.info("Player respawned at checkpoint (%.1f, %.1f)", self.x, self.y)
 
     @property
     def is_dead(self) -> bool:
@@ -205,6 +217,10 @@ class Player(BaseEntity):
         # Atualiza posição
         self.x += self.vx
         self.y += self.vy
+
+        # Atualiza cooldown de respawn
+        if self.respawn_cooldown > 0:
+            self.respawn_cooldown -= 1
 
         # Atualiza timer de invencibilidade
         if self.invincibility_timer > 0:
