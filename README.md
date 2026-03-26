@@ -147,41 +147,45 @@ uv run ruff format src/ tests/ && uv run ruff check src/ tests/ --fix && uv run 
 
 ```
 pyblaze/
-├── docs/                      # Documentação completa
-│   ├── INDEX.md              # Índice de toda documentação
-│   ├── LESSONS_LEARNED.md    # Lições aprendidas
-│   ├── guidelines/           # Padrões e best practices
-│   │   ├── git_convection.md
-│   │   ├── python_best_practices.md
-│   │   ├── docker_best_practices.md
-│   │   ├── product_requirements_document.md
-│   │   ├── tech_spec.md
-│   │   └── readme_writing_guide.md
-│   └── prompts/              # Prompts para IA
-│       └── game_agent.md
+├── .kiro/                     # Configurações e convenções do projeto
+│   ├── specs/                # Especificações (O QUÊ fazer)
+│   │   ├── prd.md           # Product Requirements Document
+│   │   └── tech_spec.md     # Especificações técnicas
+│   └── steering/            # Direcionamentos (COMO fazer)
+│       ├── git_convention.md
+│       ├── python_convention.md
+│       ├── docker_convention.md
+│       ├── documentation_convention.md
+│       └── game_agent_convention.md
+├── docs/                     # Documentação de referência
+│   ├── INDEX.md             # Índice de toda documentação
+│   ├── PROJETO_COMPLETO.md  # Visão geral completa
+│   ├── QUICK_REFERENCE.md   # Comandos rápidos
+│   ├── LESSONS_LEARNED.md   # Lições aprendidas
+│   └── CONTRIBUTING.md      # Guia de contribuição
 ├── src/
 │   └── pyblaze/
-│       ├── entities/          # Entidades do jogo
+│       ├── entities/        # Entidades do jogo
 │       │   ├── base_entity.py
 │       │   ├── player.py
 │       │   ├── enemy.py
 │       │   ├── ring.py
 │       │   └── checkpoint.py
-│       ├── scenes/            # Cenas do jogo
+│       ├── scenes/          # Cenas do jogo
 │       │   ├── base_scene.py
 │       │   ├── menu.py
 │       │   ├── game.py
 │       │   └── game_over.py
-│       ├── systems/           # Sistemas de jogo
+│       ├── systems/         # Sistemas de jogo
 │       │   ├── physics.py
 │       │   ├── camera.py
 │       │   └── hud.py
-│       ├── utils/             # Utilitários
+│       ├── utils/           # Utilitários
 │       │   ├── spritesheet.py
 │       │   └── audio.py
-│       ├── settings.py        # Constantes globais
-│       └── main.py            # Entry point
-└── tests/                     # Testes
+│       ├── settings.py      # Constantes globais
+│       └── main.py          # Entry point
+└── tests/                   # Testes
     ├── conftest.py
     └── unit/
         ├── test_physics.py
@@ -359,15 +363,22 @@ Este projeto foi desenvolvido como material educacional.
 
 ## Documentação
 
-Para informações detalhadas sobre o desenvolvimento, padrões e lições aprendidas, consulte:
+### Documentação de Referência
 
 - **[docs/INDEX.md](docs/INDEX.md)** - Índice completo da documentação
 - **[docs/PROJETO_COMPLETO.md](docs/PROJETO_COMPLETO.md)** - Resumo executivo e métricas
-- **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** - Guia de contribuição
+- **[docs/QUICK_REFERENCE.md](docs/QUICK_REFERENCE.md)** - Comandos rápidos
 - **[docs/LESSONS_LEARNED.md](docs/LESSONS_LEARNED.md)** - Problemas encontrados e soluções
-- **[docs/guidelines/](docs/guidelines/)** - Padrões de código e arquitetura
-- **[docs/prompts/](docs/prompts/)** - Prompts utilizados no desenvolvimento
+- **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** - Guia de contribuição
 - **[CHANGELOG.md](CHANGELOG.md)** - Histórico de versões e mudanças
+
+### Especificações e Convenções
+
+- **[.kiro/specs/prd.md](.kiro/specs/prd.md)** - Product Requirements Document
+- **[.kiro/specs/tech_spec.md](.kiro/specs/tech_spec.md)** - Especificações técnicas
+- **[.kiro/steering/git_convention.md](.kiro/steering/git_convention.md)** - Convenções Git e GitHub CLI
+- **[.kiro/steering/python_convention.md](.kiro/steering/python_convention.md)** - Padrões Python
+- **[.kiro/steering/documentation_convention.md](.kiro/steering/documentation_convention.md)** - Guia de documentação
 
 ## Qualidade de Código
 

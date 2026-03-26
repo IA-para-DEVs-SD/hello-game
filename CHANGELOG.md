@@ -7,6 +7,75 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ---
 
+## [Unreleased] - 2026-03-26
+
+### ♻️ Refatorado
+
+#### Reorganização Completa da Documentação
+- **Criada estrutura `.kiro/`** para especificações e convenções
+  - `.kiro/specs/` - Especificações (O QUÊ fazer)
+    - `prd.md` - Product Requirements Document
+    - `tech_spec.md` - Especificações técnicas
+  - `.kiro/steering/` - Convenções (COMO fazer)
+    - `git_convention.md` - Convenções Git e GitHub CLI
+    - `python_convention.md` - Padrões Python
+    - `docker_convention.md` - Padrões Docker
+    - `documentation_convention.md` - Guia de documentação completo
+    - `game_agent_convention.md` - Convenções para agentes IA
+
+- **Padronização de nomes**
+  - Todos os arquivos de convenção agora usam sufixo `_convention.md`
+  - Nomes simplificados: `prd.md` (antes: `product_requirements_document.md`)
+  - Correção de typo: `git_convention.md` (antes: `git_convection.md`)
+
+- **Pasta `docs/` limpa**
+  - Mantém apenas documentação de referência
+  - Removidas pastas `docs/guidelines/` e `docs/prompts/`
+  - Estrutura mais clara e navegável
+
+### ✨ Adicionado
+
+#### Convenções Git (`.kiro/steering/git_convention.md`)
+- **Formato de commit com colchetes**: `[tipo]: Descrição`
+  - Substitui formato com parênteses por simplicidade
+  - Primeira letra maiúscula obrigatória
+- **Automação completa com GitHub CLI** para org IA-para-DEVs-SD
+  - Comandos para trabalhar com múltiplos grupos (1-6)
+  - Listar, criar e clonar repositórios
+  - Gerenciar Projects/Boards
+  - Criar e gerenciar Issues e PRs
+  - **Criar cards diretamente nos boards** com GraphQL
+  - Script helper `create-card.sh` para criação rápida
+  - Workflow completo end-to-end
+  - Templates de Issue e PR prontos
+  - 10 dicas práticas para LLMs
+
+#### Guia de Documentação (`.kiro/steering/documentation_convention.md`)
+- **Guia completo** expandido do antigo `readme_writing_guide.md`
+- Cobre todos os tipos de documentação:
+  - README.md (com exemplos para jogos e APIs)
+  - Documentação técnica (INDEX, PROJETO_COMPLETO, QUICK_REFERENCE, etc)
+  - Guias e tutoriais
+  - Especificações (PRD e Tech Spec)
+  - Changelog (formato Keep a Changelog)
+- **6 tipos de diagramas Mermaid** com exemplos práticos
+- Boas práticas gerais (badges, tabelas, alertas, etc)
+- Checklist de qualidade completo
+- ~900 linhas de referência
+
+### 🔧 Corrigido
+
+- **README.md** - Atualizado para refletir nova estrutura
+  - Seção "Estrutura do Projeto" atualizada
+  - Links para `.kiro/specs/` e `.kiro/steering/`
+  - Seção "Documentação" reorganizada
+- **docs/INDEX.md** - Completamente reescrito
+  - Reflete nova organização `.kiro/`
+  - Links corrigidos para specs e conventions
+  - Descrições atualizadas
+
+---
+
 ## [1.1.0] - 2026-03-11
 
 ### ✨ Adicionado

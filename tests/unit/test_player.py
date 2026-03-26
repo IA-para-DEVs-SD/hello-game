@@ -17,9 +17,7 @@ class TestPlayerDamage:
         assert mock_player.rings == 0
         assert mock_player.lives == initial_lives
 
-    def test_take_damage_without_rings_loses_life(
-        self, mock_player: Player
-    ) -> None:
+    def test_take_damage_without_rings_loses_life(self, mock_player: Player) -> None:
         """Testa se jogador sem anéis perde vida."""
         mock_player.rings = 0
         mock_player.take_damage()

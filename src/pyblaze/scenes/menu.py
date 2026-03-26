@@ -48,6 +48,7 @@ class MenuScene(BaseScene):
                 if self.selected_option == 0:
                     # Lazy import para evitar circular import
                     from pyblaze.scenes.game import GameScene
+
                     self.switch_to(GameScene(self.screen))
                     logger.info("Starting game")
                 elif self.selected_option == 1:
@@ -84,7 +85,5 @@ class MenuScene(BaseScene):
         inst_font = pygame.font.Font(None, 24)
         instructions = "Use ARROW KEYS or W/S to navigate, ENTER/SPACE to select"
         inst_text = inst_font.render(instructions, True, (150, 150, 150))
-        inst_rect = inst_text.get_rect(
-            center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT - 50)
-        )
+        inst_rect = inst_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT - 50))
         self.screen.blit(inst_text, inst_rect)

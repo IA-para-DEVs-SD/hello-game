@@ -93,9 +93,9 @@ class Player(BaseEntity):
         # Atualiza sprint timer
         if moving and abs(self.vx) > PLAYER_SPEED * 0.9:
             self.sprint_timer += 1
-            if (
-                self.sprint_timer >= SPRINT_THRESHOLD_FRAMES
-                and self.state in (PlayerState.RUNNING, PlayerState.IDLE)
+            if self.sprint_timer >= SPRINT_THRESHOLD_FRAMES and self.state in (
+                PlayerState.RUNNING,
+                PlayerState.IDLE,
             ):
                 self.state = PlayerState.SPRINTING
         else:
@@ -209,17 +209,19 @@ class Player(BaseEntity):
         # Atualiza timer de invencibilidade
         if self.invincibility_timer > 0:
             self.invincibility_timer -= 1
-            if (
-                self.invincibility_timer == 0
-                and self.state == PlayerState.INVINCIBLE
-            ):
+            if self.invincibility_timer == 0 and self.state == PlayerState.INVINCIBLE:
                 self.state = PlayerState.IDLE
 
         # Transição de estados
-        if not self.on_ground and self.vy > 0 and self.state not in (
-            PlayerState.HURT,
-            PlayerState.DEAD,
-            PlayerState.SPIN_ATTACK,
+        if (
+            not self.on_ground
+            and self.vy > 0
+            and self.state
+            not in (
+                PlayerState.HURT,
+                PlayerState.DEAD,
+                PlayerState.SPIN_ATTACK,
+            )
         ):
             self.state = PlayerState.FALLING
 
@@ -237,11 +239,7 @@ class Player(BaseEntity):
         if self.invincibility_timer > 0 and self.invincibility_timer % 10 < 5:
             return  # Efeito de piscar durante invencibilidade
 
-        color = (
-            COLOR_PLAYER_HURT
-            if self.state == PlayerState.HURT
-            else COLOR_PLAYER
-        )
+        color = COLOR_PLAYER_HURT if self.state == PlayerState.HURT else COLOR_PLAYER
 
         pygame.draw.rect(surface, color, rect)
 

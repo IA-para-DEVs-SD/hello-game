@@ -32,9 +32,7 @@ class PhysicsSystem:
         if entity.vy > self.max_fall_speed:
             entity.vy = self.max_fall_speed
 
-    def resolve_collision(
-        self, entity: Any, platforms: list[pygame.Rect]
-    ) -> None:
+    def resolve_collision(self, entity: Any, platforms: list[pygame.Rect]) -> None:
         """Resolve colisões com plataformas usando AABB.
 
         Args:
@@ -65,9 +63,7 @@ class PhysicsSystem:
                     elif entity.vx < 0 and entity_rect.left < platform.right:
                         entity.x = platform.right
 
-    def check_collision(
-        self, rect1: pygame.Rect, rect2: pygame.Rect
-    ) -> bool:
+    def check_collision(self, rect1: pygame.Rect, rect2: pygame.Rect) -> bool:
         """Verifica se dois retângulos colidem.
 
         Args:
@@ -102,7 +98,4 @@ class PhysicsSystem:
             return False
 
         # Verifica se está caindo e se base da entidade está acima do topo do alvo
-        return bool(
-            entity.vy > 0
-            and entity_rect.bottom <= target_rect.top + tolerance
-        )
+        return bool(entity.vy > 0 and entity_rect.bottom <= target_rect.top + tolerance)

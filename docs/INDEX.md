@@ -6,13 +6,13 @@
 
 ## 📚 Visão Geral
 
-Este diretório contém toda a documentação técnica, guidelines e prompts utilizados no desenvolvimento do PyBlaze.
+Este diretório contém a documentação de referência do projeto. Para especificações técnicas e convenções, consulte a pasta `.kiro/`.
 
 ---
 
 ## 📖 Estrutura da Documentação
 
-### 📄 Visão Geral do Projeto
+### 📄 Documentação de Referência (docs/)
 
 - **[PROJETO_COMPLETO.md](PROJETO_COMPLETO.md)** - Resumo executivo completo
   - Status do projeto e entregas
@@ -23,29 +23,54 @@ Este diretório contém toda a documentação técnica, guidelines e prompts uti
   - Arquitetura detalhada
   - Roadmap e próximos passos
 
-### 🎯 Prompts
+- **[QUICK_REFERENCE.md](QUICK_REFERENCE.md)** - Referência rápida
+  - Comandos essenciais
+  - Controles do jogo
+  - Troubleshooting
+  - Dicas rápidas
 
-Instruções para agentes de IA implementarem o projeto:
+- **[LESSONS_LEARNED.md](LESSONS_LEARNED.md)** - Lições aprendidas
+  - Problemas encontrados
+  - Soluções aplicadas
+  - Recomendações para o futuro
 
-- **[game_agent.md](prompts/game_agent.md)** - Prompt principal para desenvolvimento do jogo
-  - Diretrizes obrigatórias
-  - O que deve ser entregue
-  - Regras de implementação
-  - Lições aprendidas
-  - Critérios de aceite
-  - Ordem de execução
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** - Guia de contribuição
+  - Como contribuir
+  - Processo de desenvolvimento
+  - Padrões de código
+  - Checklist de PR
 
-### 📋 Guidelines
+### 🎯 Especificações (.kiro/specs/)
 
-Padrões e best practices seguidos no projeto:
+Documentos que definem **O QUÊ** construir:
 
-1. **[git_convection.md](guidelines/git_convection.md)** - Convenções de Git
-   - Commits semânticos (Conventional Commits)
+1. **[prd.md](../.kiro/specs/prd.md)** - Product Requirements Document
+   - Visão geral e problema
+   - Objetivos e não-objetivos
+   - Requisitos funcionais e não-funcionais
+   - Métricas de sucesso
+   - Critérios de aceite
+
+2. **[tech_spec.md](../.kiro/specs/tech_spec.md)** - Especificações técnicas
+   - Stack tecnológica
+   - Escolha da engine (pygame-ce)
+   - Gerenciamento com UV
+   - Estrutura de código
+   - Arquitetura
+   - Decisões técnicas
+
+### 📋 Convenções (.kiro/steering/)
+
+Documentos que definem **COMO** fazer:
+
+1. **[git_convention.md](../.kiro/steering/git_convention.md)** - Convenções Git
+   - Commits semânticos com formato `[tipo]: Descrição`
    - Nomenclatura de branches
    - Pull requests
-   - Versionamento semântico
+   - Automação com GitHub CLI para IA-para-DEVs-SD
+   - Criação de cards nos boards
 
-2. **[python_best_practices.md](guidelines/python_best_practices.md)** - Boas práticas Python
+2. **[python_convention.md](../.kiro/steering/python_convention.md)** - Padrões Python
    - Estilo e formatação (PEP 8)
    - Nomenclatura
    - Type hints
@@ -53,38 +78,26 @@ Padrões e best practices seguidos no projeto:
    - Tratamento de erros
    - Logging
    - Testes
-   - Gerenciamento de dependências
 
-3. **[docker_best_practices.md](guidelines/docker_best_practices.md)** - Boas práticas Docker
+3. **[docker_convention.md](../.kiro/steering/docker_convention.md)** - Padrões Docker
    - Estrutura do Dockerfile
    - Multi-stage builds
    - Segurança
    - Otimização de tamanho
 
-4. **[product_requirements_document.md](guidelines/product_requirements_document.md)** - PRD
-   - Visão geral e problema
-   - Objetivos
-   - Requisitos funcionais
-   - Requisitos não-funcionais
-   - Arquitetura
-   - Métricas de sucesso
-   - Critérios de aceite
-
-5. **[tech_spec.md](guidelines/tech_spec.md)** - Especificações técnicas
-   - Stack tecnológica
-   - Escolha da engine (pygame-ce)
-   - Gerenciamento com UV
-   - Estrutura de código
-   - Configurações
-   - Testes
-
-6. **[readme_writing_guide.md](guidelines/readme_writing_guide.md)** - Guia de escrita de README
+4. **[documentation_convention.md](../.kiro/steering/documentation_convention.md)** - Guia de documentação
    - Documentação em português (obrigatório)
    - Diagramas Mermaid (obrigatório)
+   - README, specs, guias, changelog
    - Estrutura e formatação
    - Boas práticas
-   - Exemplos práticos
-   - Checklist de qualidade
+   - Templates e exemplos
+
+5. **[game_agent_convention.md](../.kiro/steering/game_agent_convention.md)** - Convenções para agentes IA
+   - Diretrizes obrigatórias
+   - O que deve ser entregue
+   - Regras de implementação
+   - Critérios de aceite
 
 ### 💡 Lições Aprendidas
 

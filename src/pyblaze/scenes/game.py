@@ -179,6 +179,7 @@ class GameScene(BaseScene):
                 self.player.spin_attack()
             elif event.key == pygame.K_ESCAPE:
                 from pyblaze.scenes.menu import MenuScene
+
                 self.switch_to(MenuScene(self.screen))
 
         if event.type == pygame.KEYUP and event.key == pygame.K_SPACE:
@@ -313,5 +314,6 @@ class GameScene(BaseScene):
     def _restart_game(self) -> None:
         """Reinicia o jogo."""
         from pyblaze.scenes.game import GameScene
+
         self.switch_to(GameScene(self.screen))
         logger.info("Game restarted")
