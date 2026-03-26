@@ -59,6 +59,7 @@ class Player(BaseEntity):
         self.facing_right = True
         self.sprint_timer = 0
         self.invincibility_timer = 0
+        self.respawn_cooldown = 0
         self.last_checkpoint_x = x
         self.last_checkpoint_y = y
 
@@ -71,16 +72,25 @@ class Player(BaseEntity):
         if self.state in (PlayerState.HURT, PlayerState.DEAD):
             return
 
-        # Movimento horizontal
+        # Movimento horizontal com controle direto
         moving = False
+        target_vx = 0.0
+
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-            self.vx -= ACCELERATION
+            target_vx = -PLAYER_SPEED
             self.facing_right = False
             moving = True
-        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-            self.vx += ACCELERATION
+        elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+            target_vx = PLAYER_SPEED
             self.facing_right = True
             moving = True
+
+        # Aplica aceleração suave em direção à velocidade alvo
+        if moving:
+            if abs(target_vx - self.vx) > ACCELERATION:
+                self.vx += ACCELERATION if target_vx > self.vx else -ACCELERATION
+            else:
+                self.vx = target_vx
 
         # Limita velocidade máxima
         if self.state == PlayerState.SPRINTING:
@@ -93,9 +103,9 @@ class Player(BaseEntity):
         # Atualiza sprint timer
         if moving and abs(self.vx) > PLAYER_SPEED * 0.9:
             self.sprint_timer += 1
-            if (
-                self.sprint_timer >= SPRINT_THRESHOLD_FRAMES
-                and self.state in (PlayerState.RUNNING, PlayerState.IDLE)
+            if self.sprint_timer >= SPRINT_THRESHOLD_FRAMES and self.state in (
+                PlayerState.RUNNING,
+                PlayerState.IDLE,
             ):
                 self.state = PlayerState.SPRINTING
         else:
@@ -180,9 +190,11 @@ class Player(BaseEntity):
         self.y = self.last_checkpoint_y
         self.vx = 0.0
         self.vy = 0.0
-        self.invincibility_timer = INVINCIBILITY_FRAMES
-        self.state = PlayerState.INVINCIBLE
-        logger.info("Player respawned at checkpoint")
+        self.on_ground = True
+        self.invincibility_timer = INVINCIBILITY_FRAMES * 3
+        self.respawn_cooldown = 120
+        self.state = PlayerState.IDLE
+        logger.info("Player respawned at checkpoint (%.1f, %.1f)", self.x, self.y)
 
     @property
     def is_dead(self) -> bool:
@@ -206,20 +218,26 @@ class Player(BaseEntity):
         self.x += self.vx
         self.y += self.vy
 
+        # Atualiza cooldown de respawn
+        if self.respawn_cooldown > 0:
+            self.respawn_cooldown -= 1
+
         # Atualiza timer de invencibilidade
         if self.invincibility_timer > 0:
             self.invincibility_timer -= 1
-            if (
-                self.invincibility_timer == 0
-                and self.state == PlayerState.INVINCIBLE
-            ):
+            if self.invincibility_timer == 0 and self.state == PlayerState.INVINCIBLE:
                 self.state = PlayerState.IDLE
 
         # Transição de estados
-        if not self.on_ground and self.vy > 0 and self.state not in (
-            PlayerState.HURT,
-            PlayerState.DEAD,
-            PlayerState.SPIN_ATTACK,
+        if (
+            not self.on_ground
+            and self.vy > 0
+            and self.state
+            not in (
+                PlayerState.HURT,
+                PlayerState.DEAD,
+                PlayerState.SPIN_ATTACK,
+            )
         ):
             self.state = PlayerState.FALLING
 
@@ -237,11 +255,7 @@ class Player(BaseEntity):
         if self.invincibility_timer > 0 and self.invincibility_timer % 10 < 5:
             return  # Efeito de piscar durante invencibilidade
 
-        color = (
-            COLOR_PLAYER_HURT
-            if self.state == PlayerState.HURT
-            else COLOR_PLAYER
-        )
+        color = COLOR_PLAYER_HURT if self.state == PlayerState.HURT else COLOR_PLAYER
 
         pygame.draw.rect(surface, color, rect)
 

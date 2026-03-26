@@ -67,9 +67,7 @@ class HUD:
         title = "VICTORY!" if victory else "GAME OVER"
         title_font = pygame.font.Font(None, 72)
         title_text = title_font.render(title, True, COLOR_HUD_TEXT)
-        title_rect = title_text.get_rect(
-            center=(SCREEN_WIDTH // 2, SCREEN_WIDTH // 4)
-        )
+        title_rect = title_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_WIDTH // 4))
         surface.blit(title_text, title_rect)
 
         # Tempo final
@@ -78,15 +76,11 @@ class HUD:
         time_text = self.font.render(
             f"Time: {minutes:02d}:{seconds:02d}", True, COLOR_HUD_TEXT
         )
-        time_rect = time_text.get_rect(
-            center=(SCREEN_WIDTH // 2, SCREEN_WIDTH // 3)
-        )
+        time_rect = time_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_WIDTH // 3))
         surface.blit(time_text, time_rect)
 
         # Instruções
         instruction = "Press SPACE to restart" if not victory else "Press SPACE to menu"
         inst_text = self.small_font.render(instruction, True, COLOR_HUD_TEXT)
-        inst_rect = inst_text.get_rect(
-            center=(SCREEN_WIDTH // 2, SCREEN_WIDTH // 2)
-        )
+        inst_rect = inst_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_WIDTH // 2))
         surface.blit(inst_text, inst_rect)

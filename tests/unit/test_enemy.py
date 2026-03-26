@@ -13,9 +13,7 @@ class TestEnemy:
         distance = abs(mock_enemy.x - mock_enemy.start_x)
         assert distance <= mock_enemy.patrol_range
 
-    def test_enemy_changes_direction_at_patrol_limit(
-        self, mock_enemy: Enemy
-    ) -> None:
+    def test_enemy_changes_direction_at_patrol_limit(self, mock_enemy: Enemy) -> None:
         """Testa se inimigo inverte direção no limite de patrulha."""
         initial_direction = mock_enemy.direction
         # Move até atingir limite

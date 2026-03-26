@@ -27,9 +27,7 @@ class SpriteSheet:
             logger.error("Failed to load spritesheet %s: %s", filepath, e)
             raise FileNotFoundError(f"Spritesheet not found: {filepath}") from e
 
-    def get_sprite(
-        self, x: int, y: int, width: int, height: int
-    ) -> pygame.Surface:
+    def get_sprite(self, x: int, y: int, width: int, height: int) -> pygame.Surface:
         """Extrai um sprite da spritesheet.
 
         Args:

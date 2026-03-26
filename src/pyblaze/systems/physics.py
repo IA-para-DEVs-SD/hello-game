@@ -32,9 +32,7 @@ class PhysicsSystem:
         if entity.vy > self.max_fall_speed:
             entity.vy = self.max_fall_speed
 
-    def resolve_collision(
-        self, entity: Any, platforms: list[pygame.Rect]
-    ) -> None:
+    def resolve_collision(self, entity: Any, platforms: list[pygame.Rect]) -> None:
         """Resolve colisões com plataformas usando AABB.
 
         Args:
@@ -49,25 +47,35 @@ class PhysicsSystem:
 
         for platform in platforms:
             if entity_rect.colliderect(platform):
-                # Colisão vertical (topo ou base)
-                if entity.vy > 0:
+                # Calcula sobreposição em cada direção
+                overlap_left = entity_rect.right - platform.left
+                overlap_right = platform.right - entity_rect.left
+                overlap_top = entity_rect.bottom - platform.top
+                overlap_bottom = platform.bottom - entity_rect.top
+
+                # Encontra a menor sobreposição para determinar direção da colisão
+                min_overlap = min(overlap_left, overlap_right, overlap_top, overlap_bottom)
+
+                # Resolve colisão pela menor sobreposição
+                if min_overlap == overlap_top and entity.vy > 0:
+                    # Colidiu por cima (pousou na plataforma)
                     entity.y = platform.top - entity.height
                     entity.vy = 0.0
                     entity.on_ground = True
-                elif entity.vy < 0:
+                elif min_overlap == overlap_bottom and entity.vy < 0:
+                    # Colidiu por baixo (bateu a cabeça)
                     entity.y = platform.bottom
                     entity.vy = 0.0
+                elif hasattr(entity, "vx") and min_overlap == overlap_left and entity.vx > 0:
+                    # Colidiu pela esquerda (indo para direita)
+                    entity.x = platform.left - entity.width
+                    entity.vx = 0.0
+                elif hasattr(entity, "vx") and min_overlap == overlap_right and entity.vx < 0:
+                    # Colidiu pela direita (indo para esquerda)
+                    entity.x = platform.right
+                    entity.vx = 0.0
 
-                # Colisão horizontal
-                if hasattr(entity, "vx"):
-                    if entity.vx > 0 and entity_rect.right > platform.left:
-                        entity.x = platform.left - entity.width
-                    elif entity.vx < 0 and entity_rect.left < platform.right:
-                        entity.x = platform.right
-
-    def check_collision(
-        self, rect1: pygame.Rect, rect2: pygame.Rect
-    ) -> bool:
+    def check_collision(self, rect1: pygame.Rect, rect2: pygame.Rect) -> bool:
         """Verifica se dois retângulos colidem.
 
         Args:
@@ -102,7 +110,4 @@ class PhysicsSystem:
             return False
 
         # Verifica se está caindo e se base da entidade está acima do topo do alvo
-        return bool(
-            entity.vy > 0
-            and entity_rect.bottom <= target_rect.top + tolerance
-        )
+        return bool(entity.vy > 0 and entity_rect.bottom <= target_rect.top + tolerance)
