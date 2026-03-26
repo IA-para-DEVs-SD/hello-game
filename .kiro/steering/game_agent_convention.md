@@ -114,6 +114,270 @@ pyblaze/
 
 ---
 
+## DEBUGGING DE JOGOS 2D (LIÇÕES CRÍTICAS)
+
+### 1. Sistema de Física e Colisão
+
+#### ❌ NUNCA faça colisão baseada apenas em posição
+```python
+# ERRADO - Causa teletransporte aleatório
+if entity.vx > 0 and entity_rect.right > platform.left:
+    entity.x = platform.left - entity.width  # BUG!
+```
+
+**Problema**: Isso reposiciona o player SEMPRE que ele está à direita da plataforma, mesmo sem colisão real!
+
+#### ✅ Use SAT (Separating Axis Theorem) correto
+```python
+# CORRETO - Calcula sobreposição real
+if entity_rect.colliderect(platform):
+    overlap_left = entity_rect.right - platform.left
+    overlap_right = platform.right - entity_rect.left
+    overlap_top = entity_rect.bottom - platform.top
+    overlap_bottom = platform.bottom - entity_rect.top
+
+    min_overlap = min(overlap_left, overlap_right, overlap_top, overlap_bottom)
+
+    if min_overlap == overlap_left and entity.vx > 0:
+        entity.x = platform.left - entity.width
+        entity.vx = 0.0
+```
+
+**Lição**: Sempre verifique QUAL lado está colidindo baseado na menor sobreposição.
+
+---
+
+### 2. Sistema de Spawn/Respawn
+
+#### ❌ NUNCA calcule spawn como `checkpoint.y + height`
+```python
+# ERRADO - Spawna no AR
+self.spawn_y = y + CHECKPOINT_HEIGHT  # BUG!
+```
+
+**Problema**: Isso coloca o spawn ABAIXO do checkpoint, não em cima de uma plataforma!
+
+#### ✅ Calcule spawn baseado na plataforma
+```python
+# CORRETO - Spawna em cima da plataforma
+# Se plataforma.top = 500 e player.height = 50
+spawn_y = platform_top - player_height - 5  # -5 = margem de segurança
+# spawn_y = 500 - 50 - 5 = 445
+```
+
+**Lição Crítica**: Sempre subtraia a altura da entidade do topo da plataforma, nunca adicione!
+
+#### ⚠️ Loop Infinito de Queda - O Bug Mais Comum
+
+**Sintomas**:
+- Player cai infinitamente após respawn
+- Centenas de warnings "Player fell off the map" em segundos
+- Player perde todas as vidas instantaneamente
+
+**Causa Raiz**:
+```python
+# Player spawna em y=400
+# Gravidade é aplicada ANTES da colisão
+# Player.y se torna 400.6 (gravidade 0.6)
+# Sistema de colisão reseta on_ground = False no início
+# Player nunca colide porque já passou da plataforma!
+```
+
+**Soluções Aplicadas** (use TODAS juntas):
+
+1. **Margem de segurança no spawn** (-5 pixels)
+2. **Desabilitar gravidade durante cooldown**:
+```python
+if player.respawn_cooldown == 0:
+    physics.apply_gravity(player)
+```
+3. **Setar `on_ground = True` no respawn**
+4. **Cooldown longo** (120 frames = 2 segundos)
+5. **Desabilitar detecção de queda durante cooldown**:
+```python
+if player.y > DEATH_Y and player.respawn_cooldown == 0:
+    player.take_damage()
+```
+
+---
+
+### 3. Controle de Movimento
+
+#### ❌ NUNCA use aceleração acumulativa pura
+```python
+# ERRADO - Player continua se movendo após soltar tecla
+if keys[K_LEFT]:
+    self.vx -= ACCELERATION  # Acumula infinitamente!
+```
+
+**Problema**: Movimento impreciso e difícil de controlar.
+
+#### ✅ Use target velocity com aceleração suave
+```python
+# CORRETO - Controle direto e responsivo
+target_vx = 0.0
+if keys[K_LEFT]:
+    target_vx = -PLAYER_SPEED
+elif keys[K_RIGHT]:
+    target_vx = PLAYER_SPEED
+
+# Acelera suavemente em direção ao alvo
+if moving:
+    if abs(target_vx - self.vx) > ACCELERATION:
+        self.vx += ACCELERATION if target_vx > self.vx else -ACCELERATION
+    else:
+        self.vx = target_vx
+```
+
+**Lição**: Defina velocidade alvo e acelere em direção a ela, não acumule indefinidamente.
+
+---
+
+### 4. Posicionamento de Objetivos
+
+#### ❌ NUNCA posicione goals/checkpoints sem verificar plataformas
+```python
+# ERRADO
+self.goal_rect = pygame.Rect(5800, 400, 80, 120)
+# Goal.bottom = 520, mas plataforma.top = 360
+# Gap de 160 pixels - IMPOSSÍVEL DE ALCANÇAR!
+```
+
+#### ✅ Calcule posição baseada nas plataformas existentes
+```python
+# CORRETO
+# Plataforma: Rect(5450, 360, 500, 40) => top=360
+# Goal.height = 120
+# Goal.bottom deve estar em 360
+goal_y = platform_top - goal_height  # 360 - 120 = 240
+self.goal_rect = pygame.Rect(5800, 240, 80, 120)
+```
+
+---
+
+### 5. Debugging Sistemático
+
+#### Checklist de Debugging para Bugs de Física:
+
+1. **Identifique o padrão nos logs**:
+   - Loop infinito? → Problema de spawn/respawn
+   - Teletransporte? → Problema de colisão
+   - Movimento errado? → Problema de input/aceleração
+
+2. **Verifique SEMPRE as coordenadas**:
+   ```python
+   logger.info("Player spawned at (%.1f, %.1f)", self.x, self.y)
+   ```
+
+3. **Desenhe retângulos de debug**:
+   ```python
+   # Visualize hitboxes
+   pygame.draw.rect(screen, (255, 0, 0), player.rect, 2)
+   pygame.draw.rect(screen, (0, 255, 0), goal_rect, 2)
+   ```
+
+4. **Teste com timeout**:
+   ```bash
+   timeout 30 uv run python main.py
+   ```
+
+5. **Analise a ordem de execução**:
+   ```
+   Input → Física → Update → Colisão → Detecção de Queda
+   ```
+
+#### Perguntas Críticas para Qualquer Bug:
+
+- ❓ A entidade está na posição correta ANTES da física?
+- ❓ A gravidade está sendo aplicada quando não deveria?
+- ❓ A colisão verifica DIREÇÃO ou só POSIÇÃO?
+- ❓ O spawn está em cima ou abaixo da plataforma?
+- ❓ Há cooldown/proteção suficiente após eventos especiais?
+
+---
+
+### 6. Valores de Referência que Funcionam
+
+**Velocidade e Física**:
+```python
+PLAYER_SPEED = 8.0           # Velocidade base
+PLAYER_SPRINT_SPEED = 15.0   # Sprint (quase 2x)
+ACCELERATION = 0.8           # Aceleração suave
+FRICTION = 0.88              # Desaceleração
+GRAVITY = 0.6                # Gravidade realista
+MAX_FALL_SPEED = 20.0        # Terminal velocity
+```
+
+**Timers e Cooldowns**:
+```python
+INVINCIBILITY_FRAMES = 120      # 2 segundos base
+RESPAWN_INVINCIBILITY = 360     # 6 segundos (3x)
+RESPAWN_COOLDOWN = 120          # 2 segundos sem gravidade
+```
+
+**Margens de Segurança**:
+```python
+SPAWN_MARGIN = 5                # Pixels acima da plataforma
+COLLISION_TOLERANCE = 10        # Tolerância para colisão de cima
+```
+
+---
+
+### 7. Padrão de Respawn Robusto (Copy-Paste Ready)
+
+```python
+def respawn(self) -> None:
+    """Reaparece no último checkpoint de forma segura."""
+    # 1. Teleporta para posição segura
+    self.x = self.last_checkpoint_x
+    self.y = self.last_checkpoint_y
+
+    # 2. Zera velocidades
+    self.vx = 0.0
+    self.vy = 0.0
+
+    # 3. CRÍTICO: Força on_ground
+    self.on_ground = True
+
+    # 4. Proteção tripla
+    self.invincibility_timer = INVINCIBILITY_FRAMES * 3
+    self.respawn_cooldown = 120  # 2s sem gravidade
+
+    # 5. Estado inicial (não INVINCIBLE, para permitir movimento)
+    self.state = PlayerState.IDLE
+
+    logger.info("Player respawned at (%.1f, %.1f)", self.x, self.y)
+```
+
+```python
+# No game loop, ANTES da física:
+if player.respawn_cooldown == 0:
+    physics.apply_gravity(player)
+else:
+    player.respawn_cooldown -= 1
+
+# Na detecção de queda:
+if player.y > DEATH_Y and player.respawn_cooldown == 0:
+    player.take_damage()
+```
+
+---
+
+### 8. Resumo das Lições Mais Importantes
+
+1. ⚠️ **Spawn = plataforma.top - entidade.height - 5** (NUNCA +)
+2. ⚠️ **Colisão deve calcular overlap, não apenas posição**
+3. ⚠️ **Desabilite gravidade durante respawn_cooldown**
+4. ⚠️ **Use target velocity, não aceleração pura acumulativa**
+5. ⚠️ **Goals devem ter .bottom = plataforma.top**
+6. ⚠️ **Sempre adicione margens de segurança (5px)**
+7. ⚠️ **Logs são seus melhores amigos - use liberalmente**
+8. ⚠️ **Teste com timeout para identificar loops infinitos**
+
+**Regra de Ouro**: Se algo teleporta, cai infinitamente ou não responde, o problema está SEMPRE na ordem de execução ou nos cálculos de coordenadas Y.
+
+---
+
 ## CRITÉRIOS DE ACEITE
 
 O jogo está pronto quando:
