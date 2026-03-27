@@ -424,9 +424,11 @@ Este projeto foi desenvolvido como material educacional.
 
 ## Métricas do Projeto
 
-- **Código:** ~1500 linhas
+- **Código:** ~1470 linhas (src/)
+- **Ferramentas:** 8 scripts de desenvolvimento
+- **Sprites:** 100+ sprites procedurais gerados
 - **Testes:** 26 (100% passing)
-- **Módulos:** 21
+- **Módulos:** 22
 - **FPS:** 60 (estável)
 - **Dependências runtime:** 1 (pygame-ce)
 - **Tempo de fase:** 3-5 minutos

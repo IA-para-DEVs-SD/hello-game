@@ -142,9 +142,11 @@ Testing:        pytest + pytest-cov
 
 ### Métricas
 
-- **Código:** ~1500 linhas
+- **Código:** ~1470 linhas (src/)
+- **Ferramentas:** 8 scripts de desenvolvimento
+- **Sprites:** 100+ sprites procedurais
 - **Testes:** 26 (100% passing)
-- **Módulos:** 21
+- **Módulos:** 22
 - **Cobertura:** Focada em lógica crítica
 - **FPS:** 60 (estável)
 

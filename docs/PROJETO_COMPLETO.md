@@ -41,8 +41,10 @@
 ### ✅ Código de Qualidade Profissional
 
 **Métricas:**
-- 📦 **21 módulos** organizados
-- 📝 **~1500 linhas** de código
+- 📦 **22 módulos** organizados
+- 📝 **~1470 linhas** de código (src/)
+- 🎨 **100+ sprites** procedurais gerados
+- 🛠️ **8 ferramentas** de desenvolvimento
 - ✅ **26 testes** (100% passando)
 - 🎯 **0 erros** no mypy (strict mode)
 - 🎨 **0 warnings** no ruff
@@ -249,9 +251,11 @@ O projeto inclui documentação detalhada de:
 
 | Categoria | Métrica | Valor |
 |-----------|---------|-------|
-| **Código** | Linhas de código | ~1500 |
-| **Código** | Módulos | 21 |
-| **Código** | Arquivos Python | 25+ |
+| **Código** | Linhas de código (src/) | ~1470 |
+| **Código** | Módulos | 22 |
+| **Código** | Arquivos Python | 30+ |
+| **Assets** | Sprites procedurais | 100+ |
+| **Assets** | Ferramentas de dev | 8 scripts |
 | **Qualidade** | Testes | 26 (100% ✅) |
 | **Qualidade** | MyPy erros | 0 |
 | **Qualidade** | Ruff warnings | 0 |
@@ -299,8 +303,9 @@ Docs: Markdown (GitHub flavored)
 - [ ] Sistema de score
 
 ### Melhorias Técnicas
-- [ ] Sprites reais (substituir formas geométricas)
-- [ ] Animações de sprites
+- [x] ~~Sprites reais (substituir formas geométricas)~~ ✅ **Implementado v1.7.1**
+- [x] ~~Animações de sprites~~ ✅ **Implementado v1.7.1**
+- [x] ~~Sistema de sprites procedurais~~ ✅ **Implementado v1.7.1**
 - [ ] Efeitos sonoros
 - [ ] Música de fundo
 - [ ] Partículas (poeira, explosões)
