@@ -14,6 +14,7 @@ from pyblaze.settings import (
     RING_FLY_VY,
     RING_SIZE,
 )
+from pyblaze.utils.assets import get_asset_manager
 
 logger = logging.getLogger(__name__)
 
@@ -35,6 +36,7 @@ class Ring(BaseEntity):
         self.vy = 0.0
         self.fly_timer = 0
         self.rotation = 0.0
+        self.asset_manager = get_asset_manager()
 
     def fly_out(self, direction: float = 1.0) -> None:
         """Inicia animação de voo ao jogador perder anéis.
@@ -93,11 +95,22 @@ class Ring(BaseEntity):
         rect = self.rect.copy()
         rect.x -= int(camera_x)
 
-        # Desenha círculo pulsante
-        pulse = abs(math.sin(self.rotation * 0.1)) * 3
-        radius = int(RING_SIZE // 2 + pulse)
+        # Tenta usar sprite, senão usa círculo colorido
+        sprite = self.asset_manager.get_ring_sprite()
 
-        pygame.draw.circle(surface, COLOR_RING, (rect.centerx, rect.centery), radius)
-        pygame.draw.circle(
-            surface, (200, 180, 0), (rect.centerx, rect.centery), radius, 2
-        )
+        if sprite:
+            # Rotaciona sprite
+            rotated_sprite = pygame.transform.rotate(sprite, self.rotation)
+            sprite_rect = rotated_sprite.get_rect(center=rect.center)
+            surface.blit(rotated_sprite, sprite_rect)
+        else:
+            # Fallback: círculo pulsante
+            pulse = abs(math.sin(self.rotation * 0.1)) * 3
+            radius = int(RING_SIZE // 2 + pulse)
+
+            pygame.draw.circle(
+                surface, COLOR_RING, (rect.centerx, rect.centery), radius
+            )
+            pygame.draw.circle(
+                surface, (200, 180, 0), (rect.centerx, rect.centery), radius, 2
+            )

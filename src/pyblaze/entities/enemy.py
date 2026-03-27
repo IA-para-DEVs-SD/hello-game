@@ -12,6 +12,7 @@ from pyblaze.settings import (
     ENEMY_PATROL_SPEED,
     ENEMY_WIDTH,
 )
+from pyblaze.utils.assets import get_asset_manager
 
 logger = logging.getLogger(__name__)
 
@@ -33,6 +34,7 @@ class Enemy(BaseEntity):
         self.patrol_speed = ENEMY_PATROL_SPEED
         self.direction = 1.0  # 1 = direita, -1 = esquerda
         self.alive = True
+        self.asset_manager = get_asset_manager()
 
     def die(self) -> None:
         """Marca o inimigo como morto."""
@@ -74,13 +76,25 @@ class Enemy(BaseEntity):
         rect = self.rect.copy()
         rect.x -= int(camera_x)
 
-        pygame.draw.rect(surface, COLOR_ENEMY, rect)
+        # Tenta usar sprite, senão usa retângulo colorido
+        sprite = self.asset_manager.get_enemy_sprite()
 
-        # Indicador de direção (olhos)
-        eye_offset = 5 if self.direction > 0 else -5
-        pygame.draw.circle(
-            surface,
-            (255, 255, 255),
-            (rect.centerx + eye_offset, rect.centery - 5),
-            3,
-        )
+        if sprite:
+            # Espelha sprite baseado na direção
+            if self.direction < 0:
+                sprite = pygame.transform.flip(sprite, True, False)
+
+            sprite_rect = sprite.get_rect(center=rect.center)
+            surface.blit(sprite, sprite_rect)
+        else:
+            # Fallback: retângulo colorido
+            pygame.draw.rect(surface, COLOR_ENEMY, rect)
+
+            # Indicador de direção (olhos)
+            eye_offset = 5 if self.direction > 0 else -5
+            pygame.draw.circle(
+                surface,
+                (255, 255, 255),
+                (rect.centerx + eye_offset, rect.centery - 5),
+                3,
+            )

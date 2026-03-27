@@ -11,6 +11,7 @@ from pyblaze.settings import (
     COLOR_CHECKPOINT,
     COLOR_CHECKPOINT_ACTIVE,
 )
+from pyblaze.utils.assets import get_asset_manager
 
 logger = logging.getLogger(__name__)
 
@@ -29,6 +30,7 @@ class Checkpoint(BaseEntity):
         self.activated = False
         self.spawn_x = x + CHECKPOINT_WIDTH // 2
         self.spawn_y = y + CHECKPOINT_HEIGHT
+        self.asset_manager = get_asset_manager()
 
     def activate(self) -> None:
         """Ativa o checkpoint."""
@@ -54,18 +56,26 @@ class Checkpoint(BaseEntity):
         rect = self.rect.copy()
         rect.x -= int(camera_x)
 
-        color = COLOR_CHECKPOINT_ACTIVE if self.activated else COLOR_CHECKPOINT
+        # Tenta usar sprite, senão usa retângulo colorido
+        sprite = self.asset_manager.get_checkpoint_sprite(self.activated)
 
-        # Desenha poste
-        pygame.draw.rect(surface, color, rect)
+        if sprite:
+            sprite_rect = sprite.get_rect(center=rect.center)
+            surface.blit(sprite, sprite_rect)
+        else:
+            # Fallback: retângulo colorido com bandeira
+            color = COLOR_CHECKPOINT_ACTIVE if self.activated else COLOR_CHECKPOINT
 
-        # Desenha bandeira
-        flag_points = [
-            (rect.right, rect.top),
-            (rect.right + 30, rect.top + 15),
-            (rect.right, rect.top + 30),
-        ]
-        pygame.draw.polygon(surface, color, flag_points)
+            # Desenha poste
+            pygame.draw.rect(surface, color, rect)
 
-        # Borda
-        pygame.draw.rect(surface, (255, 255, 255), rect, 2)
+            # Desenha bandeira
+            flag_points = [
+                (rect.right, rect.top),
+                (rect.right + 30, rect.top + 15),
+                (rect.right, rect.top + 30),
+            ]
+            pygame.draw.polygon(surface, color, flag_points)
+
+            # Borda
+            pygame.draw.rect(surface, (255, 255, 255), rect, 2)

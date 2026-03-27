@@ -21,6 +21,7 @@ from pyblaze.settings import (
     PLAYER_WIDTH,
     SPRINT_THRESHOLD_FRAMES,
 )
+from pyblaze.utils.assets import get_asset_manager
 
 logger = logging.getLogger(__name__)
 
@@ -62,6 +63,9 @@ class Player(BaseEntity):
         self.respawn_cooldown = 0
         self.last_checkpoint_x = x
         self.last_checkpoint_y = y
+        self.animation_frame = 0
+        self.animation_timer = 0
+        self.asset_manager = get_asset_manager()
 
     def move(self, keys: pygame.key.ScancodeWrapper) -> None:
         """Processa input de movimento.
@@ -201,6 +205,29 @@ class Player(BaseEntity):
         """Retorna True se o personagem está morto."""
         return self.state == PlayerState.DEAD
 
+    def _update_animation(self) -> None:
+        """Atualiza frame de animação baseado no estado."""
+        self.animation_timer += 1
+
+        # Frame 0: Idle
+        # Frame 1-2: Running
+        # Frame 3: Jumping/Spin
+
+        if self.state == PlayerState.IDLE:
+            self.animation_frame = 0
+        elif self.state in (PlayerState.RUNNING, PlayerState.SPRINTING):
+            # Alterna entre frames 1 e 2 a cada 8 frames
+            if self.animation_timer % 8 == 0:
+                self.animation_frame = 1 if self.animation_frame == 2 else 2
+        elif self.state in (
+            PlayerState.JUMPING,
+            PlayerState.FALLING,
+            PlayerState.SPIN_ATTACK,
+        ):
+            self.animation_frame = 3
+        else:
+            self.animation_frame = 0
+
     def update(self, dt: int) -> None:
         """Atualiza estado do personagem.
 
@@ -241,6 +268,9 @@ class Player(BaseEntity):
         ):
             self.state = PlayerState.FALLING
 
+        # Atualiza animação
+        self._update_animation()
+
     def draw(self, surface: pygame.Surface, camera_x: float = 0.0) -> None:
         """Renderiza o personagem.
 
@@ -251,14 +281,28 @@ class Player(BaseEntity):
         rect = self.rect.copy()
         rect.x -= int(camera_x)
 
-        # Cor baseada no estado
+        # Efeito de piscar durante invencibilidade
         if self.invincibility_timer > 0 and self.invincibility_timer % 10 < 5:
-            return  # Efeito de piscar durante invencibilidade
+            return
 
-        color = COLOR_PLAYER_HURT if self.state == PlayerState.HURT else COLOR_PLAYER
+        # Tenta usar sprite, senão usa retângulo colorido
+        sprite = self.asset_manager.get_player_sprite(self.animation_frame)
 
-        pygame.draw.rect(surface, color, rect)
+        if sprite:
+            # Espelha sprite se estiver virado para esquerda
+            if not self.facing_right:
+                sprite = pygame.transform.flip(sprite, True, False)
 
-        # Indicador de direção
-        indicator_x = rect.right if self.facing_right else rect.left - 5
-        pygame.draw.circle(surface, (255, 255, 0), (indicator_x, rect.centery), 3)
+            # Desenha sprite centralizado no rect
+            sprite_rect = sprite.get_rect(center=rect.center)
+            surface.blit(sprite, sprite_rect)
+        else:
+            # Fallback: retângulo colorido
+            color = (
+                COLOR_PLAYER_HURT if self.state == PlayerState.HURT else COLOR_PLAYER
+            )
+            pygame.draw.rect(surface, color, rect)
+
+            # Indicador de direção
+            indicator_x = rect.right if self.facing_right else rect.left - 5
+            pygame.draw.circle(surface, (255, 255, 0), (indicator_x, rect.centery), 3)
