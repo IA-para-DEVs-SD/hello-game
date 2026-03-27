@@ -15,30 +15,13 @@ Este diretório contém a documentação de referência do projeto. Para especif
 ### 📄 Documentação de Referência (docs/)
 
 - **[PROJETO_COMPLETO.md](PROJETO_COMPLETO.md)** - Resumo executivo completo
-  - Status do projeto e entregas
-  - Métricas e qualidade de código
-  - Como executar e testar
-  - Controles do jogo
-  - Comandos de desenvolvimento
-  - Arquitetura detalhada
-  - Roadmap e próximos passos
-
 - **[QUICK_REFERENCE.md](QUICK_REFERENCE.md)** - Referência rápida
-  - Comandos essenciais
-  - Controles do jogo
-  - Troubleshooting
-  - Dicas rápidas
-
 - **[LESSONS_LEARNED.md](LESSONS_LEARNED.md)** - Lições aprendidas
-  - Problemas encontrados
-  - Soluções aplicadas
-  - Recomendações para o futuro
-
+- **[SPRITE_GUIDE.md](SPRITE_GUIDE.md)** - Guia de criação de sprites
+- **[SPRITES_IMPLEMENTATION.md](SPRITES_IMPLEMENTATION.md)** - Implementação do sistema de sprites
+- **[SPRITES_SUMMARY.md](SPRITES_SUMMARY.md)** - Resumo do sistema de sprites
+- **[PROCEDURAL_SPRITES.md](PROCEDURAL_SPRITES.md)** - Sistema de sprites procedurais
 - **[CONTRIBUTING.md](CONTRIBUTING.md)** - Guia de contribuição
-  - Como contribuir
-  - Processo de desenvolvimento
-  - Padrões de código
-  - Checklist de PR
 
 ### 🎯 Especificações (.kiro/specs/)
 
@@ -289,8 +272,9 @@ O projeto é considerado bem-sucedido quando:
 
 Esta documentação foi criada e refinada após a implementação completa do PyBlaze.
 
-**Versão:** 1.0
-**Data:** 2026-03-11
+**Versão da Documentação:** 1.0
+**Versão do Projeto:** 1.7.1
+**Última Atualização:** 2026-03-27
 **Status:** ✅ Completo e testado
 
 ---

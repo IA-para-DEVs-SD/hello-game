@@ -21,6 +21,7 @@ Jogo de plataforma 2D de alta velocidade inspirado no Sonic the Hedgehog, desenv
 - Spin attack para destruir inimigos
 - Sistema de anéis e vidas
 - State machine completa do personagem
+- **Sistema de sprites visuais** com animações e efeitos
 - Fase jogável com 4 zonas:
   - Zona 1: Introdução com plataformas baixas
   - Zona 2: Rampa de aceleração e corredor de alta velocidade
@@ -157,12 +158,35 @@ pyblaze/
 │       ├── docker_convention.md
 │       ├── documentation_convention.md
 │       └── game_agent_convention.md
+├── assets/                   # Assets visuais e sonoros
+│   ├── sprites/             # Sprites das entidades
+│   │   ├── player.png       # Spritesheet do player (4 frames)
+│   │   ├── enemy.png        # Sprite do inimigo
+│   │   ├── ring.png         # Sprite do anel
+│   │   ├── checkpoint.png   # Checkpoint inativo
+│   │   ├── checkpoint_active.png # Checkpoint ativo
+│   │   ├── platform_tile.png # Tile de plataforma
+│   │   └── procedural/      # Sprites procedurais (100+)
+│   └── README.md            # Documentação dos assets
 ├── docs/                     # Documentação de referência
 │   ├── INDEX.md             # Índice de toda documentação
 │   ├── PROJETO_COMPLETO.md  # Visão geral completa
 │   ├── QUICK_REFERENCE.md   # Comandos rápidos
 │   ├── LESSONS_LEARNED.md   # Lições aprendidas
+│   ├── SPRITE_GUIDE.md      # Guia de criação de sprites
+│   ├── SPRITES_IMPLEMENTATION.md # Implementação do sistema de sprites
+│   ├── SPRITES_SUMMARY.md   # Resumo do sistema de sprites
+│   ├── PROCEDURAL_SPRITES.md # Sistema de sprites procedurais
 │   └── CONTRIBUTING.md      # Guia de contribuição
+├── tools/                    # Ferramentas de desenvolvimento
+│   ├── generate_sprites.py  # Gerador de sprites básicos
+│   ├── generate_advanced_sprites.py # Gerador de sprites avançados
+│   ├── procedural_sprite_generator.py # Gerador procedural
+│   ├── generate_all_sprites.py # Gera todos os sprites
+│   ├── custom_masks.py      # Máscaras para sprites procedurais
+│   ├── switch_sprites.py    # Alternador de sprites
+│   ├── sprite_viewer.py     # Visualizador de sprites
+│   └── create_player_spritesheet.py # Cria spritesheet do player
 ├── src/
 │   └── pyblaze/
 │       ├── entities/        # Entidades do jogo
@@ -182,7 +206,8 @@ pyblaze/
 │       │   └── hud.py
 │       ├── utils/           # Utilitários
 │       │   ├── spritesheet.py
-│       │   └── audio.py
+│       │   ├── audio.py
+│       │   └── assets.py    # Gerenciador de sprites
 │       ├── settings.py      # Constantes globais
 │       └── main.py          # Entry point
 └── tests/                   # Testes
@@ -369,8 +394,16 @@ Este projeto foi desenvolvido como material educacional.
 - **[docs/PROJETO_COMPLETO.md](docs/PROJETO_COMPLETO.md)** - Resumo executivo e métricas
 - **[docs/QUICK_REFERENCE.md](docs/QUICK_REFERENCE.md)** - Comandos rápidos
 - **[docs/LESSONS_LEARNED.md](docs/LESSONS_LEARNED.md)** - Problemas encontrados e soluções
+- **[docs/SPRITE_GUIDE.md](docs/SPRITE_GUIDE.md)** - Guia de criação de sprites
+- **[docs/SPRITES_IMPLEMENTATION.md](docs/SPRITES_IMPLEMENTATION.md)** - Implementação do sistema de sprites
+- **[docs/SPRITES_SUMMARY.md](docs/SPRITES_SUMMARY.md)** - Resumo do sistema de sprites
+- **[docs/PROCEDURAL_SPRITES.md](docs/PROCEDURAL_SPRITES.md)** - Sistema de sprites procedurais
 - **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** - Guia de contribuição
 - **[CHANGELOG.md](CHANGELOG.md)** - Histórico de versões e mudanças
+
+### Assets
+
+- **[assets/README.md](assets/README.md)** - Documentação dos sprites e assets visuais
 
 ### Especificações e Convenções
 

@@ -7,6 +7,117 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ---
 
+## [1.7.1] - 2026-03-27
+
+### ✨ Adicionado
+
+#### Sistema Completo de Sprites Visuais
+- **AssetManager** - Gerenciador centralizado de sprites com cache automático
+  - Carregamento inteligente de sprites
+  - Fallback para formas geométricas
+  - Suporte a spritesheets e sprites únicos
+  - Sistema de prioridade (procedural → avançado → básico)
+
+- **Sprites Avançados** - Sprites com efeitos visuais profissionais
+  - Player estilo Sonic com gradientes radiais e sombras
+  - Enemy vermelho com olhos amarelos brilhantes
+  - Ring dourado em forma de anel com brilho
+  - Checkpoints com bandeiras animadas
+  - Platform tiles com textura de terra e grama
+  - Spritesheet do player com 4 frames de animação
+
+- **Sistema de Sprites Procedurais** - Geração infinita de sprites únicos
+  - 21 máscaras customizadas (personagens, criaturas, objetos, cenário)
+  - Gerador procedural com paletas HSV aleatórias
+  - Espelhamento automático e contornos
+  - 100+ sprites gerados automaticamente
+  - Variações infinitas a cada execução
+
+#### Ferramentas de Desenvolvimento (8 scripts)
+- `generate_sprites.py` - Gerador de sprites básicos
+- `generate_advanced_sprites.py` - Gerador de sprites com efeitos
+- `procedural_sprite_generator.py` - Gerador procedural base
+- `generate_all_sprites.py` - Gera todos os sprites de uma vez
+- `custom_masks.py` - Biblioteca de 21 máscaras
+- `switch_sprites.py` - Alternador entre sprites normais/procedurais
+- `sprite_viewer.py` - Visualizador interativo de sprites
+- `create_player_spritesheet.py` - Cria spritesheet do player
+
+#### Documentação Extensiva (4 guias, 3000+ linhas)
+- **SPRITE_GUIDE.md** (900+ linhas) - Guia completo de criação de sprites
+  - Técnicas de desenho com pygame
+  - Gradientes, sombras e brilhos
+  - Criação de spritesheets
+  - Integração nas entidades
+  - Animações por estado
+  - Troubleshooting completo
+
+- **SPRITES_IMPLEMENTATION.md** - Documentação técnica da implementação
+  - Arquitetura do AssetManager
+  - Sistema de cache
+  - Integração nas entidades
+  - Fluxo de carregamento
+
+- **SPRITES_SUMMARY.md** - Resumo executivo do sistema
+  - Estatísticas e métricas
+  - Como usar as ferramentas
+  - Estrutura de arquivos
+  - Guia rápido
+
+- **PROCEDURAL_SPRITES.md** - Sistema de geração procedural
+  - Como funciona o gerador
+  - Criando máscaras customizadas
+  - Paletas de cores HSV
+  - Exemplos práticos
+
+#### Hooks de Automação (6 hooks)
+- `auto-test-on-save` - Executa testes ao editar código
+- `verify-game-startup` - Verifica se jogo inicia em mudanças críticas
+- `update-docs-reminder` - Lembra de atualizar documentação
+- `quality-check-on-finish` - Formata código ao finalizar
+- `final-test-check` - Executa testes completos ao finalizar
+- `suggest-commit` - Sugere commits ao terminar trabalho
+
+### 🔧 Melhorado
+
+#### Entidades Atualizadas
+- **Player** - Sistema de animação com 4 frames
+  - Frame 0: Idle (parado)
+  - Frames 1-2: Running (correndo)
+  - Frame 3: Jumping/Spin (pulando)
+  - Espelhamento horizontal baseado na direção
+  - Integração com AssetManager
+
+- **Enemy** - Sprite avançado com efeitos visuais
+- **Ring** - Rotação suave do sprite
+- **Checkpoint** - Sprites diferentes para ativo/inativo
+
+#### Estrutura do Projeto
+- Pasta `assets/` criada para sprites
+- Pasta `tools/` criada para scripts de desenvolvimento
+- Pasta `.kiro/hooks/` criada para automação
+- Documentação reorganizada em `docs/`
+
+### 📊 Estatísticas
+
+- **Sprites criados:** 112+ (6 básicos + 6 avançados + 100+ procedurais)
+- **Ferramentas:** 8 scripts Python
+- **Documentação:** 4 guias (3000+ linhas)
+- **Máscaras:** 21 tipos diferentes
+- **Hooks:** 6 automações
+- **Testes:** 26/26 passando (100%)
+- **Cobertura:** 62% (acima dos 30% requeridos)
+
+### 🎨 Recursos Visuais
+
+- Sprites estilo Sonic com gradientes e sombras
+- Sistema de animação fluido
+- Efeitos de brilho e volume
+- Paletas de cores harmônicas
+- Geração procedural infinita
+
+---
+
 ## [Unreleased] - 2026-03-26
 
 ### ♻️ Refatorado

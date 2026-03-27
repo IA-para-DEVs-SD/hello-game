@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pyblaze"
-version = "1.5.2"
+version = "1.7.1"
 description = "Jogo de plataforma 2D de alta velocidade inspirado no Sonic"
 requires-python = ">=3.12"
 dependencies = [
