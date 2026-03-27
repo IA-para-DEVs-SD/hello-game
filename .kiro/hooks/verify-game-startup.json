@@ -1,0 +1,13 @@
+{
+  "name": "Verify Game Startup",
+  "version": "1.0.0",
+  "description": "Verifica se o jogo inicia sem erros após modificações em arquivos principais",
+  "when": {
+    "type": "fileEdited",
+    "patterns": ["src/pyblaze/main.py", "src/pyblaze/settings.py", "src/pyblaze/utils/assets.py"]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Verifique se o jogo ainda inicia corretamente executando: uv run python src/pyblaze/main.py (aguarde 3 segundos e verifique os logs). Se houver erros, corrija-os imediatamente."
+  }
+}

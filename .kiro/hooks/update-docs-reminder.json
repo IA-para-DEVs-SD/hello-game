@@ -1,0 +1,13 @@
+{
+  "name": "Update Docs Reminder",
+  "version": "1.0.0",
+  "description": "Lembra de atualizar documentação quando estrutura do projeto muda",
+  "when": {
+    "type": "fileEdited",
+    "patterns": ["pyproject.toml", "README.md"]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Verifique se as documentações em docs/ estão coerentes com as mudanças feitas. Atualize docs/INDEX.md se necessário."
+  }
+}

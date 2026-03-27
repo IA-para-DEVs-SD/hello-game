@@ -1,0 +1,12 @@
+{
+  "name": "Final Test Check",
+  "version": "1.0.0",
+  "description": "Executa testes completos quando o agente termina de trabalhar para garantir que nada quebrou",
+  "when": {
+    "type": "agentStop"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Execute os testes completos com: uv run pytest -v. Se houver falhas, corrija-as antes de finalizar. Se tudo passar, confirme que o trabalho está completo."
+  }
+}

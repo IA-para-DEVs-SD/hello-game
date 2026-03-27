@@ -1,0 +1,12 @@
+{
+  "name": "Suggest Commit",
+  "version": "1.0.0",
+  "description": "Verifica se há arquivos não commitados e sugere criar um commit após o trabalho",
+  "when": {
+    "type": "agentStop"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Verifique se há mudanças não commitadas com 'git status'. Se houver, sugira criar um commit seguindo a convenção [tipo]: Descrição do projeto."
+  }
+}

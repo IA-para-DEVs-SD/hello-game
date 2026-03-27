@@ -1,0 +1,13 @@
+{
+  "name": "Auto Test on Save",
+  "version": "1.0.0",
+  "description": "Executa testes unitários quando arquivos de código são modificados",
+  "when": {
+    "type": "fileEdited",
+    "patterns": ["src/pyblaze/**/*.py"]
+  },
+  "then": {
+    "type": "runCommand",
+    "command": "uv run pytest tests/unit/ -v --tb=short"
+  }
+}

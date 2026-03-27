@@ -1,0 +1,12 @@
+{
+  "name": "Quality Check on Finish",
+  "version": "1.0.0",
+  "description": "Executa formatação e verificações de qualidade (ruff format, ruff check, mypy) quando o agente termina de trabalhar",
+  "when": {
+    "type": "agentStop"
+  },
+  "then": {
+    "type": "runCommand",
+    "command": "uv run ruff format src/ tests/ && uv run ruff check src/ tests/ --fix && uv run mypy src/ && echo '✅ Verificações de qualidade concluídas!'"
+  }
+}
