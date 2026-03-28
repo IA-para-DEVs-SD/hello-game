@@ -90,7 +90,9 @@ class TestCheckpoint:
         assert checkpoint1.activated is True
         assert checkpoint2.activated is False
 
-    def test_draw_does_not_crash_inactive(self, mock_pygame_surface: pygame.Surface) -> None:
+    def test_draw_does_not_crash_inactive(
+        self, mock_pygame_surface: pygame.Surface
+    ) -> None:
         """Testa que draw() não crasha com checkpoint inativo."""
         checkpoint = Checkpoint(100.0, 100.0)
 
@@ -100,7 +102,9 @@ class TestCheckpoint:
 
         assert True
 
-    def test_draw_does_not_crash_active(self, mock_pygame_surface: pygame.Surface) -> None:
+    def test_draw_does_not_crash_active(
+        self, mock_pygame_surface: pygame.Surface
+    ) -> None:
         """Testa que draw() não crasha com checkpoint ativo."""
         checkpoint = Checkpoint(100.0, 100.0)
         checkpoint.activate()
