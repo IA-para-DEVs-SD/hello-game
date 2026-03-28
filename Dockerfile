@@ -1,7 +1,7 @@
 # Dockerfile para PyBlaze
 # Jogo de plataforma 2D desenvolvido em Python com pygame-ce
 
-FROM python:3.12-slim
+FROM python:3.14-slim
 
 # Metadados
 LABEL maintainer="PyBlaze Team"
