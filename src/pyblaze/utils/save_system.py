@@ -3,7 +3,7 @@
 import json
 import logging
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 logger = logging.getLogger(__name__)
 
@@ -62,7 +62,7 @@ class SaveSystem:
 
         try:
             with open(self.save_file, encoding="utf-8") as f:
-                data = json.load(f)
+                data = cast(dict[str, Any], json.load(f))
             logger.info("Game loaded successfully from %s", self.save_file)
             return data
         except (OSError, json.JSONDecodeError) as e:
