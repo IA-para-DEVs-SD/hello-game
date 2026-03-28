@@ -14,6 +14,7 @@ Este diretório contém a documentação de referência do projeto. Para especif
 
 ### 📄 Documentação de Referência (docs/)
 
+- **[IMPROVEMENTS_APPLIED.md](IMPROVEMENTS_APPLIED.md)** - 🆕 Melhorias aplicadas (v1.7.1)
 - **[PROJETO_COMPLETO.md](PROJETO_COMPLETO.md)** - Resumo executivo completo
 - **[QUICK_REFERENCE.md](QUICK_REFERENCE.md)** - Referência rápida
 - **[LESSONS_LEARNED.md](LESSONS_LEARNED.md)** - Lições aprendidas

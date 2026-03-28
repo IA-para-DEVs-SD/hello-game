@@ -4,9 +4,11 @@
 
 ![Python](https://img.shields.io/badge/Python-3.12-blue?logo=python&logoColor=white)
 ![pygame-ce](https://img.shields.io/badge/pygame--ce-2.5+-green?logo=pygame&logoColor=white)
-![Tests](https://img.shields.io/badge/Tests-26%20passing-brightgreen?logo=pytest&logoColor=white)
+![Tests](https://img.shields.io/badge/Tests-60%20passing-brightgreen?logo=pytest&logoColor=white)
+![Coverage](https://img.shields.io/badge/Coverage-69%25-brightgreen?logo=pytest&logoColor=white)
 ![Type Check](https://img.shields.io/badge/mypy-strict-blue?logo=python&logoColor=white)
 ![Ruff](https://img.shields.io/badge/code%20style-ruff-000000?logo=ruff&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-ready-2496ED?logo=docker&logoColor=white)
 ![License](https://img.shields.io/badge/License-Educational-orange)
 ![CI](https://img.shields.io/badge/CI-GitHub%20Actions-2088FF?logo=github-actions&logoColor=white)
 
@@ -16,6 +18,7 @@ Jogo de plataforma 2D de alta velocidade inspirado no Sonic the Hedgehog, desenv
 
 ## Características
 
+### 🎮 Gameplay
 - Personagem com movimento acelerado e mecânicas de alta velocidade
 - Sistema de pulo variável (curto/longo baseado no tempo de pressão)
 - Spin attack para destruir inimigos
@@ -31,14 +34,44 @@ Jogo de plataforma 2D de alta velocidade inspirado no Sonic the Hedgehog, desenv
 - Câmera com suavização (lerp)
 - HUD com contador de anéis, vidas e timer
 
+### 💾 Sistemas Avançados (Novo!)
+- **Save/Load System** - Salve seu progresso automaticamente
+- **Sistema de Configuração** - 20+ variáveis via `.env`
+- **Performance Monitor** - FPS, update time, render time em tempo real
+- **Analytics Local** - Rastreie métricas de gameplay (privado)
+- **Docker Support** - Containerização completa com 4 ambientes
+
+### 🛠️ Infraestrutura Moderna
+- **60 testes** (100% passando) com 69% de cobertura
+- **Pre-commit hooks** - Qualidade garantida automaticamente
+- **Dependabot** - Auto-updates de dependências
+- **CI/CD** - GitHub Actions com verificações completas
+- **Type-safe** - MyPy strict mode (0 erros)
+
 ## Requisitos
 
 - Python 3.12+
 - `uv` (gerenciador de pacotes)
+- **OU** Docker (para execução containerizada)
 
 ## Instalação
 
-### 1. Instalar o `uv`
+### Opção 1: Docker (Recomendado)
+
+```bash
+# Build
+docker-compose build
+
+# Run tests
+docker-compose --profile test run pyblaze-test
+
+# Run linting
+docker-compose --profile lint run pyblaze-lint
+```
+
+### Opção 2: Instalação Local
+
+#### 1. Instalar o `uv`
 
 **macOS / Linux:**
 ```bash

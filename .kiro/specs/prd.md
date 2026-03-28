@@ -9,10 +9,10 @@
 | Campo       | Valor                          |
 |-------------|--------------------------------|
 | Produto     | PyBlaze                        |
-| Versão      | 1.0                            |
-| Data        | 2025-03-11                     |
+| Versão      | 1.7.1                          |
+| Data        | 2026-03-28                     |
 | Autor       | Agente de Produto — IA         |
-| Status      | **Draft**                      |
+| Status      | **Lançado**                    |
 | Tipo        | Jogo Desktop (App Python)      |
 
 ---
@@ -48,10 +48,20 @@ Criar um jogo completo, jogável e com uma fase polida que sirva simultaneamente
 - Trilha sonora e efeitos sonoros básicos
 - Loop de física: gravidade, pulo, colisão com plataforma
 
+### ✅ NOVOS RECURSOS (v1.7.1)
+
+- **Sistema de Save/Load** - Progresso salvo automaticamente
+- **Sistema de Configuração** - 20+ variáveis via `.env`
+- **Performance Monitor** - Métricas em tempo real (FPS, update, render)
+- **Analytics Local** - Rastreamento de gameplay (privado)
+- **Docker Support** - Containerização completa
+- **60 testes automatizados** - 69% de cobertura
+- **Pre-commit hooks** - Qualidade garantida
+- **CI/CD completo** - GitHub Actions + Dependabot
+
 ### ❌ OUT OF SCOPE — O que esta versão NÃO faz
 
 - Múltiplas fases ou mundo mapa
-- Sistema de save/load de progresso
 - Multiplayer local ou online
 - Loja ou sistema de personalização
 - Boss ao final da fase

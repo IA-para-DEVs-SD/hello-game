@@ -1,0 +1,79 @@
+# Pre-commit hooks para PyBlaze
+# Instalar: pip install pre-commit
+# Ativar: pre-commit install
+
+repos:
+  # Ruff - Linting e formatação
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.8.4
+    hooks:
+      # Linter
+      - id: ruff
+        args: [--fix]
+        types_or: [python, pyi]
+      # Formatter
+      - id: ruff-format
+        types_or: [python, pyi]
+
+  # MyPy - Type checking
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.13.0
+    hooks:
+      - id: mypy
+        additional_dependencies: [pygame-ce>=2.5.0]
+        args: [--strict, --ignore-missing-imports]
+        files: ^src/
+
+  # Hooks gerais do pre-commit
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      # Previne commits em branches protegidas
+      - id: no-commit-to-branch
+        args: [--branch, main, --branch, master]
+      # Remove espaços em branco no final das linhas
+      - id: trailing-whitespace
+      # Garante nova linha no final do arquivo
+      - id: end-of-file-fixer
+      # Verifica sintaxe YAML
+      - id: check-yaml
+      # Verifica sintaxe TOML
+      - id: check-toml
+      # Verifica sintaxe JSON
+      - id: check-json
+      # Previne arquivos grandes
+      - id: check-added-large-files
+        args: [--maxkb=1000]
+      # Verifica merge conflicts
+      - id: check-merge-conflict
+      # Verifica casos de nome de arquivo
+      - id: check-case-conflict
+      # Detecta chaves privadas
+      - id: detect-private-key
+      # Previne commits em symlinks
+      - id: check-symlinks
+
+  # Conventional Commits
+  - repo: https://github.com/compwa/conventional-pre-commit
+    rev: v0.7.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+
+# Configuração global
+default_language_version:
+  python: python3.12
+
+# Arquivos a ignorar
+exclude: |
+  (?x)^(
+    \.git/|
+    \.venv/|
+    __pycache__/|
+    \.pytest_cache/|
+    \.mypy_cache/|
+    \.ruff_cache/|
+    dist/|
+    build/|
+    .*\.egg-info/
+  )$

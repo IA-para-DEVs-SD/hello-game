@@ -45,3 +45,9 @@ def mock_ring():
     from pyblaze.entities.ring import Ring
 
     return Ring(x=150, y=450)
+
+
+@pytest.fixture
+def mock_pygame_surface():
+    """Cria uma superfície pygame para testes de renderização."""
+    return pygame.Surface((800, 600))
