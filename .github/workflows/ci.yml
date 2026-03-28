@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - name: Checkout código
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Instalar UV
         uses: astral-sh/setup-uv@v3
@@ -76,7 +76,7 @@ jobs:
 
     steps:
       - name: Checkout código
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Instalar UV
         uses: astral-sh/setup-uv@v3
