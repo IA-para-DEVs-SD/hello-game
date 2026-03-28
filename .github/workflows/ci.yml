@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Instalar UV
-        uses: astral-sh/setup-uv@v3
+        uses: astral-sh/setup-uv@v7
         with:
           version: "latest"
 
@@ -79,7 +79,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Instalar UV
-        uses: astral-sh/setup-uv@v3
+        uses: astral-sh/setup-uv@v7
 
       - name: Configurar Python
         run: uv python install ${{ matrix.python-version }}
