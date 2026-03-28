@@ -1,6 +1,5 @@
 """Testes para o sistema de checkpoints."""
 
-import pytest
 import pygame
 
 from pyblaze.entities.checkpoint import Checkpoint

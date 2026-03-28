@@ -5,9 +5,10 @@ import logging
 import pstats
 import time
 from collections import deque
+from collections.abc import Callable
 from io import StringIO
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 
 logger = logging.getLogger(__name__)
 

@@ -1,7 +1,6 @@
 """Testes de integração end-to-end para gameplay."""
 
 import pygame
-import pytest
 
 from pyblaze.entities.checkpoint import Checkpoint
 from pyblaze.entities.enemy import Enemy
@@ -119,7 +118,6 @@ class TestGameplayIntegration:
         enemy = Enemy(x=200, y=100, patrol_range=100)
 
         initial_x = enemy.x
-        direction = enemy.direction
 
         # Simula várias atualizações
         for _ in range(200):
@@ -154,7 +152,6 @@ class TestGameplayIntegration:
         assert player.rings == 0
 
         # 4. Inimigo é derrotado
-        initial_alive = enemy.alive
         enemy.die()
         assert enemy.alive is False  # Enemy tem alive (not is_alive)
 

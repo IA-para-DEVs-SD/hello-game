@@ -61,7 +61,7 @@ class SaveSystem:
             return None
 
         try:
-            with open(self.save_file, "r", encoding="utf-8") as f:
+            with open(self.save_file, encoding="utf-8") as f:
                 data = json.load(f)
             logger.info("Game loaded successfully from %s", self.save_file)
             return data
